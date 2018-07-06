@@ -6,6 +6,7 @@ class Turbolinks.SnapshotRenderer extends Turbolinks.Renderer
     @currentHeadDetails = new Turbolinks.HeadDetails @currentSnapshot.head
     @newHeadDetails = new Turbolinks.HeadDetails @newSnapshot.head
     @newBody = @newSnapshot.body
+    @newRootElement = @newBody.querySelector('[data-turbolinks-root]')
 
   render: (callback) ->
     if @shouldRender()
@@ -61,7 +62,12 @@ class Turbolinks.SnapshotRenderer extends Turbolinks.Renderer
       replaceableElement.parentNode.replaceChild(element, replaceableElement)
 
   assignNewBody: ->
-    document.body = @newBody
+    existingRootElement = document.querySelector('[data-turbolinks-root]')
+    if @newRootElement and existingRootElement
+      console.log 'replacing root element only'
+      replaceElementWithElement existingRootElement, @newRootElement
+    else
+      document.body = @newBody
 
   focusFirstAutofocusableElement: ->
     @findFirstAutofocusableElement()?.focus()
