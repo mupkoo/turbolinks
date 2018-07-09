@@ -127,7 +127,6 @@ renderingTest "does not evaluate data-turbolinks-eval=false scripts", (assert, s
 renderingTest "preserves permanent elements", (assert, session, done) ->
   permanentElement = do findPermanentElement = ->
     session.element.document.getElementById("permanent")
-
   assert.equal(permanentElement.textContent, "Rendering")
   session.clickSelector "#permanent-element-link", ->
     session.waitForEvent "turbolinks:render", ->
@@ -184,18 +183,6 @@ renderingTest "before-cache event", (assert, session, done) ->
     session.waitForEvent "turbolinks:before-cache", ->
       body.querySelector("h1").textContent = "Modified"
     session.waitForEvent "turbolinks:render", ->
-      session.goBack()
-      session.waitForEvent "turbolinks:render", ->
-        assert.equal(body.querySelector("h1").textContent, "Modified")
-        done()
-
-renderingTest "mutation record as before-cache notification", (assert, session, done) ->
-  {documentElement, body} = session.element.document
-  session.clickSelector("#same-origin-link")
-  observe documentElement, childList: true, (stop, {removedNodes}) ->
-    if body in removedNodes
-      stop()
-      body.querySelector("h1").textContent = "Modified"
       session.goBack()
       session.waitForEvent "turbolinks:render", ->
         assert.equal(body.querySelector("h1").textContent, "Modified")
