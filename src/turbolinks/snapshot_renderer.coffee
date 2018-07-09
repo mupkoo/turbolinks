@@ -95,16 +95,15 @@ class Turbolinks.SnapshotRenderer extends Turbolinks.Renderer
   findFirstAutofocusableElement: ->
     document.body.querySelector("[autofocus]")
 
-# should these be one indented?
-createPlaceholderForPermanentElement = (permanentElement) ->
-  element = document.createElement("meta")
-  element.setAttribute("name", "turbolinks-permanent-placeholder")
-  element.setAttribute("content", permanentElement.id)
-  { element, permanentElement }
+  createPlaceholderForPermanentElement = (permanentElement) ->
+    element = document.createElement("meta")
+    element.setAttribute("name", "turbolinks-permanent-placeholder")
+    element.setAttribute("content", permanentElement.id)
+    { element, permanentElement }
 
-replaceElementWithElement = (fromElement, toElement) ->
-  if parentElement = fromElement.parentNode
-    parentElement.replaceChild(toElement, fromElement)
+  replaceElementWithElement = (fromElement, toElement) ->
+    if parentElement = fromElement.parentNode
+      parentElement.replaceChild(toElement, fromElement)
 
-getRootElementOf = (node) ->
-  node?.querySelector '[data-turbolinks-root]'
+  getRootElementOf = (node) ->
+    node?.querySelector '[data-turbolinks-root]'
